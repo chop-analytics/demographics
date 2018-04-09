@@ -91,7 +91,9 @@ std_demo_sql <- c("with COHORT as
       str_replace_all("metric_to_analyze", metric)
     # then do the same stuff as above, but refer to qmr_dev.. instead of ocqi_uat..
   }
+
   writeClipboard(sql)
+  print("SQL Query was copied to clipboard. Paste into Aginity to run.")
 
   demo_data <- dbGetQuery(qmr_con, sql)
 

@@ -3,8 +3,8 @@ Version: 0.0.0.9000
 Title: OCQI Disparties Screening
 Description: Stratifies a metric from input dataset by demographic variables.
 Authors@R: c(
-   person("Nonye", "Madu", , "maduc@email.chop.edu", c("aut")),
-   person("Paul", "Wildenhain", , "wildenhaip@email.chop.edu", c("aut"))
+   person("Nonye", "Madu", , email="maduc@email.chop.edu", role=c("aut")),
+   person("Paul", "Wildenhain", , email="wildenhaip@email.chop.edu", role=c("aut", "cre"))
    )
 Imports:
    dplyr,
