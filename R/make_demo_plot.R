@@ -1,5 +1,11 @@
-library(ggplot2)
-library(ggthemes)
+#' Make demographic plots
+#'
+#' Helper function to make stratified plots by each demographic field.
+#'
+#' @param demo Dataframe with demographic fields to plot
+#'
+#' @import ggplot2
+#' @import ggthemes
 
 make_demo_plot <- function(demo){
   ggplot(data = filter(demo_pivot, demo_group == demo), aes(x = demo_value, y = METRIC)) +

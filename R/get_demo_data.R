@@ -1,8 +1,14 @@
-library(stringr)
-library(odbc)
-qmr_con <- dbConnect(odbc::odbc(),
-                     dsn = "QMR_DEV",
-                     bigint = "integer")
+#' Get demographic data
+#'
+#' Helper function to add demographic data to input dataset (from either datamart or writing R dataframe to QMR_DEV)
+#'
+#' @param table Either datamart name or R dataframe
+#' @param metric Metric to be stratified
+#' @param qmr_con QMR_DEV connection name
+#' @param datamart Logical indicating if table argument is a datamart.
+#'
+#' @import stringr
+#' @import odbc
 
 get_demo_data <- function(table, metric, qmr_con, datamart){
 
@@ -96,6 +102,3 @@ std_demo_sql <- c("with COHORT as
   demo_data
 
 }
-
-test <- get_demo_data(table = "FACT_AKI_COHORT", metric = "INVASIVE_VENT_DAYS", qmr_con)
-test2 <- get_demo_data(table = "test", metric = "METRIC", qmr_con, datamart = F)

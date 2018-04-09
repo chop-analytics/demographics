@@ -1,7 +1,15 @@
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(purrr)
+#' Stratify dataset by demographic variables
+#'
+#' Function to stratify a metric from an input dataset by race/ethnicity, primary language, and payer type.
+#'
+#' @param table Either datamart name or R dataframe
+#' @param metric Metric to be stratified
+#' @param qmr_con QMR_DEV connection name
+#' @param datamart Logical indicating if table argument is a datamart. Defaults to TRUE.
+#'
+#' @import tidyr
+#' @import dplyr
+#' @import purrr
 
 screen_demos <- function(table, metric, qmr_con, datamart = TRUE) {
 # get data
