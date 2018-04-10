@@ -35,5 +35,7 @@ demo_pivot <-
 
 demo_plots <- map(demo_vars, ~make_demo_plot(data = demo_pivot, metric = metric, demo = .))
 
+names(demo_plots) <- demo_vars
+
 demo_plots
 }
