@@ -4,10 +4,12 @@
 \alias{make_demo_plot}
 \title{Make demographic plots}
 \usage{
-make_demo_plot(data, demo)
+make_demo_plot(data, metric, demo)
 }
 \arguments{
 \item{data}{Dataframe with demographics}
+
+\item{metric}{Field from dataframe to stratify}
 
 \item{demo}{Demographic fields to plot}
 }
