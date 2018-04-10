@@ -15,9 +15,18 @@
 #'
 #' @examples
 #' \dontrun{
+#' # Make sure you have a connection to \code{QMR_DEV} established
 #' screen_demos(table = "FACT_KARABOTS_BREASTFEEDING",
 #' metric = "BREASTFED_ONLY_IND",
 #' qmr_con = qmr_dev)
+#' }
+#'
+#' \dontrun{
+#' # Make sure you have a connection to \code{QMR_DEV} established
+#' screen_demos(table = "your_data_frame",
+#' metric = "column_in_dataframe",
+#' qmr_con = qmr_dev,
+#' datamart = FALSE)
 #' }
 
 screen_demos <- function(table, metric, qmr_con, datamart = TRUE) {
