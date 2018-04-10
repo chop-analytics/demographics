@@ -18,3 +18,10 @@ screen_demos(table, metric, qmr_con, datamart = TRUE)
 \description{
 Function to stratify a metric from an input dataset by race/ethnicity, primary language, and payer type.
 }
+\examples{
+\dontrun{
+screen_demos(table = "FACT_KARABOTS_BREASTFEEDING",
+metric = "BREASTFED_ONLY_IND",
+qmr_con = qmr_dev)
+}
+}

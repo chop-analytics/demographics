@@ -10,6 +10,13 @@
 #' @import tidyr
 #' @import dplyr
 #' @import purrr
+#'
+#' @examples
+#' \dontrun{
+#' screen_demos(table = "FACT_KARABOTS_BREASTFEEDING",
+#' metric = "BREASTFED_ONLY_IND",
+#' qmr_con = qmr_dev)
+#' }
 
 screen_demos <- function(table, metric, qmr_con, datamart = TRUE) {
 # get data
