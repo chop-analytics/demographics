@@ -27,13 +27,14 @@ std_demo_sql <- c("with COHORT as
                   SELECT
                   COHORT.PAT_KEY,
                   census.FIPS,
-                  CASE WHEN COUNT(DISTINCT DICT1.DICT_NM) > 1 THEN 'Multi-racial' ELSE MAX(DICT1.DICT_NM) END AS RACE,
-				          case when ETHNICITY <> 'Hispanic or Latino' then
-					              case when RACE = 'White' then 'Non-Hispanic White'
-						            case when RACE = 'Black' then 'Non-Hispanic Black'
-							          case when RACE = 'Refused' then 'Refused'
-						            else 'Other' end
-					           else 'Hispanic or Latino' end as RACE,
+                  CASE WHEN COUNT(DISTINCT RACE_DICT.DICT_NM) > 1 THEN 'Multi-racial' ELSE MAX(RACE_DICT.DICT_NM) END AS RACE_RAW,
+                  case when ETHNIC_GRP <> 'Hispanic or Latino' then
+                    case when RACE_RAW = 'White' then 'Non-Hispanic White'
+                    when RACE_RAW = 'Black or African American' then 'Non-Hispanic Black'
+                    when RACE_RAW = 'Multi-racial' then 'Multi-racial'
+                    when RACE_RAW = 'Refused' then 'Refused'
+                    else 'Other' end
+                  else 'Hispanic or Latino' end as RACE,
                   case when pat.LANG is null then 'ENGLISH' else LANG end as PRIMARY_LANG
                   FROM table_to_analyze cohort
                   LEFT JOIN CDWUAT..PATIENT_GEOGRAPHICAL_SPATIAL_INFO map on cohort.PAT_KEY = map.PAT_KEY
@@ -41,7 +42,7 @@ std_demo_sql <- c("with COHORT as
                   LEFT JOIN CDWUAT..CENSUS_TRACT census on map.CENSUS_TRACT_KEY = census.CENSUS_TRACT_KEY
                   LEFT JOIN CDWUAT..PATIENT PAT                   ON COHORT.PAT_KEY = PAT.PAT_KEY
                   LEFT JOIN CDWUAT..PATIENT_RACE_ETHNICITY RACE   ON PAT.PAT_KEY = RACE.PAT_KEY AND RACE.RACE_IND = 1
-                  LEFT JOIN CDWUAT..CDW_DICTIONARY DICT1          ON RACE.DICT_RACE_ETHNIC_KEY = DICT1.DICT_KEY
+                  LEFT JOIN CDWUAT..CDW_DICTIONARY RACE_DICT      ON RACE.DICT_RACE_ETHNIC_KEY = RACE_DICT.DICT_KEY
                   GROUP BY
                   COHORT.PAT_KEY,
                   census.FIPS,
@@ -67,9 +68,16 @@ std_demo_sql <- c("with COHORT as
                   demos.PRIMARY_LANG,
                   --demos.FIPS,
                   payer.PAYER_TYPE
-                  from COHORT cohort
+				          from COHORT cohort
                   left join DEMOS on cohort.PAT_KEY = demos.PAT_KEY
                   left join PAYER on cohort.VISIT_KEY = payer.VISIT_KEY
+        				  group by
+        				  cohort.VISIT_KEY,
+        				  cohort.PAT_KEY,
+        				  cohort.METRIC,
+        				  demos.RACE,
+        				  demos.PRIMARY_LANG,
+        				  payer.PAYER_TYPE
                   ;"
   )
 
