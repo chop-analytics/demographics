@@ -36,7 +36,7 @@ c("with cohort as
   when race_raw = 'Refused' then 'Refused'
   else 'Other' end
   else 'Hispanic or Latino' end as race,
-  case when pat.lang is null then 'English' else lang end as primary_lang
+  case when pat.lang is null or pat.lang = 'ENGLISH' then 'English' else lang end as primary_lang
   from table_to_analyze cohort
   left join cdwuat..patient_geographical_spatial_info map on cohort.pat_key = map.pat_key
   and map.seq_num = 0
