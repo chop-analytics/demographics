@@ -24,7 +24,7 @@ demo_pivot <-
   demo_data %>%
   gather(demo_group, demo_value, -VISIT_KEY, -PAT_KEY, -METRIC)
 
-demo_plots <- map(demo_vars, make_demo_plot)
+demo_plots <- map(demo_vars, ~make_demo_plot(data = demo_pivot, demo = .))
 
 demo_plots
 }
