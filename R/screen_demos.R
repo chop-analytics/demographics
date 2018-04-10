@@ -11,6 +11,8 @@
 #' @import dplyr
 #' @import purrr
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' screen_demos(table = "FACT_KARABOTS_BREASTFEEDING",
