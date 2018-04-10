@@ -10,8 +10,9 @@
 #' @import ggthemes
 
 make_demo_plot <- function(data, metric, demo){
-  ggplot(data = filter(data, demo_group == demo), aes(x = demo_value, y = METRIC)) +
+  ggplot(data = filter(data, demo_group == demo), aes(x = reorder(demo_value, -METRIC), y = METRIC)) +
     geom_bar(stat = "summary", fun.y = "mean", fill = "#50a0f0") +
     theme_few() +
-    labs(x = demo, y = "AVERAGE", title = paste(metric, "stratified by", demo))
+    labs(x = demo, y = paste("Avg of", metric), title = paste(metric, "stratified by", demo)) +
+    coord_flip()
 }
