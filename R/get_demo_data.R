@@ -13,73 +13,74 @@
 get_demo_data <- function(table, metric, qmr_con, datamart){
 
 # SQL Query goes here
-std_demo_sql <- c("with COHORT as
-                  (
-                  select
-                  cohort.PAT_KEY,
-                  cohort.VISIT_KEY,
-                  cohort.metric_to_analyze as metric
-                  from table_to_analyze cohort
-                  ),
+std_demo_sql <-
+c("with COHORT as
+(
+select
+cohort.PAT_KEY,
+cohort.VISIT_KEY,
+cohort.metric_to_analyze as metric
+from table_to_analyze cohort
+),
 
-                  DEMOS as
-                  (
-                  SELECT
-                  COHORT.PAT_KEY,
-                  census.FIPS,
-                  CASE WHEN COUNT(DISTINCT RACE_DICT.DICT_NM) > 1 THEN 'Multi-racial' ELSE MAX(RACE_DICT.DICT_NM) END AS RACE_RAW,
-                  case when ETHNIC_GRP <> 'Hispanic or Latino' then
-                    case when RACE_RAW = 'White' then 'Non-Hispanic White'
-                    when RACE_RAW = 'Black or African American' then 'Non-Hispanic Black'
-                    when RACE_RAW = 'Multi-racial' then 'Multi-racial'
-                    when RACE_RAW = 'Refused' then 'Refused'
-                    else 'Other' end
-                  else 'Hispanic or Latino' end as RACE,
-                  case when pat.LANG is null then 'ENGLISH' else LANG end as PRIMARY_LANG
-                  FROM table_to_analyze cohort
-                  LEFT JOIN CDWUAT..PATIENT_GEOGRAPHICAL_SPATIAL_INFO map on cohort.PAT_KEY = map.PAT_KEY
-                  and map.SEQ_NUM = 0
-                  LEFT JOIN CDWUAT..CENSUS_TRACT census on map.CENSUS_TRACT_KEY = census.CENSUS_TRACT_KEY
-                  LEFT JOIN CDWUAT..PATIENT PAT                   ON COHORT.PAT_KEY = PAT.PAT_KEY
-                  LEFT JOIN CDWUAT..PATIENT_RACE_ETHNICITY RACE   ON PAT.PAT_KEY = RACE.PAT_KEY AND RACE.RACE_IND = 1
-                  LEFT JOIN CDWUAT..CDW_DICTIONARY RACE_DICT      ON RACE.DICT_RACE_ETHNIC_KEY = RACE_DICT.DICT_KEY
-                  GROUP BY
-                  COHORT.PAT_KEY,
-                  census.FIPS,
-                  pat.LANG,
-                  PAT.ETHNIC_GRP
-                  ),
+DEMOS as
+(
+SELECT
+COHORT.PAT_KEY,
+census.FIPS,
+CASE WHEN COUNT(DISTINCT RACE_DICT.DICT_NM) > 1 THEN 'Multi-racial' ELSE MAX(RACE_DICT.DICT_NM) END AS RACE_RAW,
+case when ETHNIC_GRP <> 'Hispanic or Latino' then
+case when RACE_RAW = 'White' then 'Non-Hispanic White'
+when RACE_RAW = 'Black or African American' then 'Non-Hispanic Black'
+when RACE_RAW = 'Multi-racial' then 'Multi-racial'
+when RACE_RAW = 'Refused' then 'Refused'
+else 'Other' end
+else 'Hispanic or Latino' end as RACE,
+case when pat.LANG is null then 'ENGLISH' else LANG end as PRIMARY_LANG
+FROM table_to_analyze cohort
+LEFT JOIN CDWUAT..PATIENT_GEOGRAPHICAL_SPATIAL_INFO map on cohort.PAT_KEY = map.PAT_KEY
+and map.SEQ_NUM = 0
+LEFT JOIN CDWUAT..CENSUS_TRACT census on map.CENSUS_TRACT_KEY = census.CENSUS_TRACT_KEY
+LEFT JOIN CDWUAT..PATIENT PAT                   ON COHORT.PAT_KEY = PAT.PAT_KEY
+LEFT JOIN CDWUAT..PATIENT_RACE_ETHNICITY RACE   ON PAT.PAT_KEY = RACE.PAT_KEY AND RACE.RACE_IND = 1
+LEFT JOIN CDWUAT..CDW_DICTIONARY RACE_DICT      ON RACE.DICT_RACE_ETHNIC_KEY = RACE_DICT.DICT_KEY
+GROUP BY
+COHORT.PAT_KEY,
+census.FIPS,
+pat.LANG,
+PAT.ETHNIC_GRP
+),
 
-                  PAYER as
-                  (
-                  select
-                  cohort.visit_key,
-                  case when rpt_grp_10 is null or rpt_grp_10 not in ('GOVERNMENT', 'COMMERCIAL') then 'OTHER' else rpt_grp_10 end as payer_type
-                  from table_to_analyze cohort
-                  left join CDWUAT..HOSPITAL_ACCOUNT acct on cohort.visit_key=acct.pri_visit_key
-                  left join CDWUAT..payor on payor.payor_key=acct.pri_payor_key
-                  )
+PAYER as
+(
+select
+cohort.visit_key,
+case when rpt_grp_10 is null or rpt_grp_10 not in ('GOVERNMENT', 'COMMERCIAL') then 'OTHER' else rpt_grp_10 end as payer_type
+from table_to_analyze cohort
+left join CDWUAT..HOSPITAL_ACCOUNT acct on cohort.visit_key=acct.pri_visit_key
+left join CDWUAT..payor on payor.payor_key=acct.pri_payor_key
+)
 
-                  select
-                  cohort.PAT_KEY,
-                  cohort.VISIT_KEY,
-                  cohort.METRIC,
-                  demos.RACE,
-                  demos.PRIMARY_LANG,
-                  --demos.FIPS,
-                  payer.PAYER_TYPE
-				          from COHORT cohort
-                  left join DEMOS on cohort.PAT_KEY = demos.PAT_KEY
-                  left join PAYER on cohort.VISIT_KEY = payer.VISIT_KEY
-        				  group by
-        				  cohort.VISIT_KEY,
-        				  cohort.PAT_KEY,
-        				  cohort.METRIC,
-        				  demos.RACE,
-        				  demos.PRIMARY_LANG,
-        				  payer.PAYER_TYPE
-                  ;"
-  )
+select
+cohort.PAT_KEY,
+cohort.VISIT_KEY,
+cohort.METRIC,
+demos.RACE,
+demos.PRIMARY_LANG,
+--demos.FIPS,
+payer.PAYER_TYPE
+from COHORT cohort
+left join DEMOS on cohort.PAT_KEY = demos.PAT_KEY
+left join PAYER on cohort.VISIT_KEY = payer.VISIT_KEY
+group by
+cohort.VISIT_KEY,
+cohort.PAT_KEY,
+cohort.METRIC,
+demos.RACE,
+demos.PRIMARY_LANG,
+payer.PAYER_TYPE
+;"
+)
 
   if (datamart) {
     # replace table/metric in std sql code, remember ocqi_uat..
