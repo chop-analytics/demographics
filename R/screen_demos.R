@@ -5,7 +5,7 @@
 #' @param table Either datamart name or R dataframe
 #' @param metric Metric to be stratified
 #' @param qmr_con QMR_DEV connection name
-#' @param datamart Logical indicating if table argument is a datamart. Defaults to TRUE.
+#' @param datamart Logical indicating if table argument is a datamart in \code{OCQI_UAT} Defaults to TRUE.
 #'
 #' @import tidyr
 #' @import dplyr

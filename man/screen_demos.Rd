@@ -13,7 +13,7 @@ screen_demos(table, metric, qmr_con, datamart = TRUE)
 
 \item{qmr_con}{QMR_DEV connection name}
 
-\item{datamart}{Logical indicating if table argument is a datamart. Defaults to TRUE.}
+\item{datamart}{Logical indicating if table argument is a datamart in \code{OCQI_UAT} Defaults to TRUE.}
 }
 \description{
 Function to stratify a metric from an input dataset by race/ethnicity, primary language, and payer type.
