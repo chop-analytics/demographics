@@ -9,6 +9,8 @@
 #'
 #' @import stringr
 #' @import odbc
+#'
+#' @export
 
 get_demo_data <- function(table, metric, qmr_con, datamart){
 
