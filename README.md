@@ -40,7 +40,10 @@ demographics::screen_demos(table = "TABLE_NAME", metric = "METRIC_FIELD",
 Notes about the above:
 
 -   `table` can be either a datamart or an R dataframe. Whichever you
-    choose to use, it **must** contain PAT\_KEY, VISIT\_KEY.
+    choose to use, it **must** contain PAT\_KEY, VISIT\_KEY. If you are
+    not using a datamart, **only retain your primary key and the fields
+    necessary to run the function**. Doing otherwise may generate an
+    error.
 -   `metric` must be a numeric field in your datamart or dataframe.
 -   `qmr_con` is the name of your `QMR_DEV` connection object.
 -   `datamart` refers whether or not `table` is a datamart. Defaults to
