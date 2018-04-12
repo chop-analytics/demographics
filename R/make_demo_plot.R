@@ -11,8 +11,12 @@
 
 make_demo_plot <- function(data, metric, demo){
   ggplot(data = filter(data, demo_group == demo), aes(x = reorder(demo_value, -METRIC), y = METRIC)) +
-    geom_bar(stat = "summary", fun.y = "mean", fill = "#50a0f0") +
+    geom_bar(stat = "summary", fun.y = "mean", fill = "#50a0f0", na.rm = TRUE) +
     theme_few() +
     labs(x = demo, y = paste("Avg of", metric), title = paste(metric, "stratified by", demo)) +
     coord_flip()
 }
+
+
+
+
